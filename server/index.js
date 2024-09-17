@@ -29,8 +29,15 @@ app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(morgan("common"));
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
-app.use(cors());
 app.use("/assets", express.static(path.join(__dirname, "public/assets")));
+
+const allowedOrigins = ['https://social-sphere-frontend-pearl.vercel.app'];
+
+app.use(cors({
+  origin: allowedOrigins, // Allow only your frontend domain
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // List allowed HTTP methods
+  credentials: true, // Enable sending cookies and authorization headers if needed
+}));
 
 /* FILE STORAGE */
 const storage = multer.diskStorage({
